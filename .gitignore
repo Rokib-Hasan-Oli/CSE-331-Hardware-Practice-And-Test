@@ -1,0 +1,27 @@
+# ---- STM32CubeMX ----
+# HAL / CMSIS drivers are regenerated from each project's .ioc file
+# (open the .ioc in STM32CubeMX and click "Generate Code").
+Drivers/
+
+# ---- Keil uVision (MDK-ARM) ----
+# Build output folders: MDK-ARM/<project name>/ (objects, .axf, .hex, .map, ...)
+**/MDK-ARM/*/
+!**/MDK-ARM/RTE/
+!**/MDK-ARM/DebugConfig/
+# Per-user window layout and listing files
+*.uvguix.*
+*.uvguix_*
+*.bak
+*.lst
+JLinkLog.txt
+EventRecorderStub.scvd
+
+# ---- STM32CubeIDE ----
+Debug/
+Release/
+
+# ---- OS / editor clutter ----
+desktop.ini
+Thumbs.db
+.DS_Store
+~$*
