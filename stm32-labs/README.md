@@ -21,17 +21,22 @@ Every folder is a complete CubeMX + Keil project (`.ioc`, `Core/`, `MDK-ARM/`), 
 | 14 | [`DHT11`](DHT11) | DHT11 temp/humidity | PB9, TIM1 (µs delay) | °C, °F and %RH on the LCD with checksum + retry |
 | 15 | [`DH11`](DH11) | DHT11 driver module | PA1, DWT cycle-counter delay | Same sensor, split into reusable `dht11.c` / `dwt_delay.c` |
 | 16 | [`GreenHouse`](GreenHouse) | Soil-moisture sensor | ADC1 (PB1) | Soil ADC value and Dry / Wet status on the LCD |
-| 17 | [`OLED`](OLED) | 0.96″ SSD1306 OLED | I2C1 | Name with scrolling, then a "SCORE" counter ([photos](OLED/photos)) |
+| 17 | [`OLED`](OLED) | 0.96″ SSD1306 OLED | I2C1 (PB6, PB7) | Name with scrolling, then a "SCORE" counter ([video + photos](OLED/README.md)) |
 | 18 | [`GreenHouseOLED`](GreenHouseOLED) | DHT11 + OLED | PB9, I2C1, TIM1 | Temperature (°C/°F) and humidity on the OLED |
 | 19 | [`SG90`](SG90) | Servo PWM | TIM2 CH2 (PA1), 50 Hz | Drives a continuous-rotation SG90 at full speed |
 | 20 | [`Servo360`](Servo360) | Servo PWM | TIM2 CH2 (PA1) | Reverses the servo's direction every 2 s |
 
-The OLED lab in action:
+### The OLED lab in action
 
 <p>
-  <img src="OLED/photos/IMG_20250829_194208.jpg" width="49%" alt="OLED showing ROKIB HASAN">
-  <img src="OLED/photos/IMG_20250829_194215.jpg" width="49%" alt="OLED showing SCORE counter">
+  <a href="OLED/video/oled-demo.mp4"><img src="OLED/video/oled-demo-thumbnail.jpg" width="100%" alt="Demo video: OLED lab running on the Blue Pill"></a>
 </p>
+<p>
+  <img src="OLED/photos/02-name-display-closeup.jpg" width="49%" alt="OLED showing ROKIB HASAN">
+  <img src="OLED/photos/05-score-counter-closeup.jpg" width="49%" alt="OLED showing the SCORE counter">
+</p>
+
+Click the image above to open the 21-second demo video. All 8 photos are on the [OLED lab page](OLED/README.md#photos).
 
 ## Building a project
 
@@ -44,7 +49,7 @@ The STM32 HAL/CMSIS driver code (`Drivers/`, about 65 MB per project) is **not s
 
 ## Fixes applied
 
-The last Keil build logs in the original archive showed compile errors in two projects, one more file had been broken by edits after its last successful build, and one project had a display bug:
+The last Keil build logs in the original archive showed compile errors in two projects, one more file had been broken by edits after its last successful build, and two projects had runtime bugs:
 
 | Project | Problem | Fix |
 |---------|---------|-----|
@@ -52,5 +57,6 @@ The last Keil build logs in the original archive showed compile errors in two pr
 | `LCD_4KeyPad` | Same extra-brace bug, introduced after the last successful build | Same fix |
 | `DH11` | `main.c(3): error: 'i2c.h' file not found` — `main.c` had been rewritten to include `i2c.h` / `gpio.h`, which CubeMX only generates when *"Generate peripheral initialization as a pair of .c/.h files"* is on (it's off in this `.ioc`), so `MX_I2C1_Init`, `MX_GPIO_Init`, `SystemClock_Config` and `hi2c1` were missing | Rebuilt `main.c` in the standard CubeMX layout with the init code matching `DH11.ioc` (8 MHz HSI, I2C1 @ 100 kHz, PA1 input); the DHT11 + LCD logic is unchanged, now inside `USER CODE` blocks so it survives regeneration |
 | `IRtest` | `HD44780_SetCursor(1,0)` was used for the second line, but the driver's arguments are `(col, row)`, so "Starting..." and the distance band overwrote line 1 instead of appearing on line 2 | `HD44780_SetCursor(0,1)` |
+| `OLED` | `char snum[5]`, but the counter reaches `"10000"`, which needs 6 bytes with the terminating NUL, so `sprintf` overflowed the buffer | `char snum[6]` |
 
 > **Note on `DH11`:** its `.ioc` sets *SYS → Debug* to **No Debug**, which turns the SWD pins off after flashing. To reflash the board, use ST-LINK *Connect Under Reset*, or set *Debug → Serial Wire* in CubeMX and regenerate.

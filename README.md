@@ -22,7 +22,7 @@ It ended with a group project, the **Smart Greenhouse & Water Tank Manager**.
 ```
 .
 ├── assembly-labs/        ARM assembly labs 2–6: task sheets, submitted answers, corrected .s solutions
-├── stm32-labs/           20 STM32CubeMX + Keil projects (GPIO → LCD → keypad → sensors → servo)
+├── stm32-labs/           20 STM32CubeMX + Keil projects (GPIO → LCD → keypad → sensors → servo), OLED demo video + photos
 ├── greenhouse-project/   Final group project: firmware versions, reports, pin diagram
 ├── libraries/            Reusable drivers: I²C LCD (HD44780), SSD1306 OLED, DHT11
 ├── course-materials/     Lecture slides, lab manuals, hardware list
@@ -61,6 +61,21 @@ See the [project table](stm32-labs/README.md) for details and [build instruction
 ## 3. Final project: Smart Greenhouse & Water Tank Manager → [`greenhouse-project/`](greenhouse-project)
 
 Monitors air temperature and humidity (DHT11), soil moisture (ADC) and the water-tank level (HC-SR04). It shows everything on an I²C LCD with an RGB status LED, and opens a servo-driven irrigation valve when the soil is too dry or the tank level is out of range. The firmware includes alarm confirmation, sensor-health checks and a maintenance mode.
+
+## Project gallery
+
+The [OLED lab](stm32-labs/OLED/README.md) running on my breadboard: a Blue Pill driving a 0.96″ SSD1306 display over I²C. Click the first image to watch the demo video.
+
+<p>
+  <a href="stm32-labs/OLED/video/oled-demo.mp4"><img src="stm32-labs/OLED/video/oled-demo-thumbnail.jpg" width="100%" alt="Demo video: OLED lab running on the Blue Pill"></a>
+</p>
+<p>
+  <img src="stm32-labs/OLED/photos/02-name-display-closeup.jpg" width="32%" alt="OLED showing ROKIB HASAN">
+  <img src="stm32-labs/OLED/photos/05-score-counter-closeup.jpg" width="32%" alt="OLED showing the SCORE counter">
+  <img src="stm32-labs/OLED/photos/06-name-display-overhead.jpg" width="32%" alt="Overhead view of the breadboard setup">
+</p>
+
+More photos: [OLED lab page](stm32-labs/OLED/README.md#photos)
 
 ## Hardware used
 
