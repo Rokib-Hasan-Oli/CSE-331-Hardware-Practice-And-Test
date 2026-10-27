@@ -93,7 +93,7 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
     SSD1306_Init();
-  char snum[5];
+  char snum[6];  // up to "10000" + terminating NUL
 
   SSD1306_GotoXY (0,0);
   SSD1306_Puts ("ROKIB", &Font_11x18, 1);
